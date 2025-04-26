@@ -18,11 +18,20 @@ app = typer.Typer()
 @app.command()
 def summarize(
     path: str = typer.Option(".", help="directory path of project"),
-    provider: ProviderType = typer.Option(ProviderType.openai, help="provider model type, current support: openai, deepseek"),
-    api_key: str = typer.Option(None, help="api key (env: OPENAI_API_KEY or DEEPSEEK_API_KEY)"),
+    provider: ProviderType = typer.Option(
+        ProviderType.openai,
+        help="provider model type, current support: openai, deepseek",
+    ),
+    api_key: str = typer.Option(
+        None, help="api key (env: OPENAI_API_KEY or DEEPSEEK_API_KEY)"
+    ),
     save_path: str = typer.Option(None, help="where to save the generated summary"),
 ):
-    api_key = api_key or os.environ.get("OPENAI_API_KEY") or os.environ.get("DEEPSEEK_API_KEY")
+    api_key = (
+        api_key
+        or os.environ.get("OPENAI_API_KEY")
+        or os.environ.get("DEEPSEEK_API_KEY")
+    )
     if not api_key:
         typer.echo("please provide api key or set env variable", err=True)
         raise typer.Exit(code=1)
@@ -53,20 +62,23 @@ class AIAssistant:
             self.base_url = None  # openai default
             self.model = "gpt-4o"
 
-        self.client = OpenAI(
-            api_key=self.api_key,
-            base_url=self.base_url
-        ) if self.base_url else OpenAI(api_key=self.api_key)
+        self.client = (
+            OpenAI(api_key=self.api_key, base_url=self.base_url)
+            if self.base_url
+            else OpenAI(api_key=self.api_key)
+        )
 
-    def ask(self, question: str, system_prompt: str = "You are an expert technical writer.") -> Optional[str]:
+    def ask(
+        self, question: str, system_prompt: str = "You are an expert technical writer."
+    ) -> Optional[str]:
         try:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
                     {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": question}
+                    {"role": "user", "content": question},
                 ],
-                stream=False
+                stream=False,
             )
             return response.choices[0].message.content
         except Exception as e:

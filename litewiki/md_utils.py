@@ -32,6 +32,6 @@ def aggregate_md_contents(md_files: List[Dict[str, str]]) -> str:
     """
     parts = []
     for item in md_files:
-        part = f"File path: {item['path']}\nContent:\n{item['content']}\n{'='*40}\n"
+        part = f"File path: {item['path']}\nContent:\n{item['content']}\n{'=' * 40}\n"
         parts.append(part)
     return "\n".join(parts)
