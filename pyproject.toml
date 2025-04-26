@@ -1,0 +1,12 @@
+[project]
+name = "litewiki"
+version = "0.1.0"
+description = "AI-powered project summarizer"
+dependencies = [
+    "openai>=1.76.0",
+    "requests>=2.32.3",
+    "typer>=0.15.2",
+]
+
+[project.scripts]
+litewiki = "litewiki.cli:app"
