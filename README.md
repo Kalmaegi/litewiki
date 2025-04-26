@@ -1,4 +1,4 @@
-# litewiki
+# litewiki(WIP)
 
 A lightweight CLI documentation generator inspired by [DeepWiki](deepwiki.com).
 
